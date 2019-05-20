@@ -7,30 +7,39 @@
 		<Option compiler="copy_of_gnu_gcc_compiler_540" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/tpsa_python" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/tpsa_python.cpython-35m-x86_64-linux-gnu.so" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
 				<Option object_output="obj/Debug/" />
-				<Option type="1" />
+				<Option type="3" />
 				<Option compiler="copy_of_gnu_gcc_compiler_540" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
 				<Compiler>
+					<Add option="-std=c++11" />
 					<Add option="-g" />
+					<Add option="-shared -fPIC `python3 -m pybind11 --includes`" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/tpsa_python" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/tpsa_python.cpython-35m-x86_64-linux-gnu.so" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
 				<Option object_output="obj/Release/" />
-				<Option type="1" />
+				<Option type="3" />
 				<Option compiler="copy_of_gnu_gcc_compiler_540" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-O3" />
+					<Add option="-Wall" />
+					<Add option="-std=c++11" />
+					<Add option="-shared -fPIC `python3 -m pybind11 --includes`" />
 				</Compiler>
-				<Linker>
-					<Add option="-s" />
-				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../src/tpsa_python.cc" />
+		<Unit filename="../tpsa/include/da.h" />
+		<Unit filename="../tpsa/src/da.cc" />
 		<Extensions>
 			<envvars />
 			<code_completion />
