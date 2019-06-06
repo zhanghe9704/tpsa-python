@@ -152,33 +152,6 @@ After we defined the bases, we can define other DA vectors and perform computati
  ```
 
 
-
-
-
-
-
-
-
-
-
-
-
-The result is shown as follows:
-V [16]              Base  [ 4 / 286 ]
-
----------------------------------------------
-
- 1.000000000000000e+00      0  0  0     0  
-
--1.000000000000000e+00      1  0  0     1   
-
-  2.000000000000000e+00      0  1  0     2   
-
-  5.000000000000000e-01       0  0  1     3
-
-......
-
-
 ## Acknowledgement
 
 Thanks to Dr. Lingyun Yang for providing his tpsa code. 
