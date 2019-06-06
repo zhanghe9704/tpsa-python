@@ -10,8 +10,23 @@ namespace py=pybind11;
 using namespace pybind11::literals;
 using std::vector;
 
+PYBIND11_MAKE_OPAQUE(std::vector<DAVector>);
+
 PYBIND11_MODULE(tpsa, m) {
     m.doc() = "TPSA/DA lib";
+
+    py::class_<std::vector<DAVector>>(m, "DAVectorList")
+        .def(py::init<>())
+        .def("assign", ([](std::vector<DAVector> &v, int n){DAVector x=0; for(int i=0; i<n; ++i) v.push_back(x); }))
+        .def("clear", &std::vector<DAVector>::clear)
+        .def("pop_back", &std::vector<DAVector>::pop_back)
+        .def("push_back", (void (std::vector<DAVector>::*)(const DAVector &)) &std::vector<DAVector>::push_back)
+        .def("__len__", [](const std::vector<DAVector> &v){return v.size();})
+        .def("__getitem__", [](const std::vector<DAVector> &v, int i){if (i<0 || i>=v.size()) throw py::index_error(); return v[i];})
+        .def("__setitem__", [](std::vector<DAVector> &v, int i, DAVector x){if (i<0 || i>=v.size()) throw py::index_error(); v[i]=x;})
+        .def("__iter__", [](std::vector<DAVector> &v) {
+             return py::make_iterator(v.begin(), v.end());
+             }, py::keep_alive<0,1>()); /* keep vector alive while iterator is used */
 
     py::class_<DAVector>(m, "DAVector")
         .def(py::init<>())
