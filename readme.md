@@ -16,57 +16,6 @@ For TPSA and DA, please refer to chapter 8 in [*Lecture Notes on Special Topics 
 
 This code is developed  using the C++ tpsa lib (<https://github.com/zhanghe9704/tpsa>) and pybind11 (<https://github.com/pybind/pybind11>). 
 
-
-
-Currently, the tpsa lib supports the following operators and math functions. 
-
-Math operator overloaded
-
-| Left hand | Operator | Right hand |
-| :-------: | :------: | :--------: |
-| DAVector  |    +     |  DAVector  |
-|  double   |    +     |  DAVector  |
-| DAVector  |    +     |   float    |
-|           |    +     |  DAVector  |
-| DAVector  |    -     |  DAVector  |
-| DAVector  |    -     |   float    |
-|   float   |    -     |  DAVector  |
-|           |    -     |  DAVector  |
-| DAVector  |    *     |  DAVector  |
-| DAVector  |    *     |   float    |
-|   float   |    *     |  DAVector  |
-| DAVector  |    /     |  DAVector  |
-| DAVector  |    /     |   float    |
-|   float   |    /     |  DAVector  |
-| DAVector  |    =     |  DAVector  |
-| DAVector  |    =     |   float    |
-| DAVector  |    +=    |  DAVector  |
-| DAVector  |    +=    |   float    |
-| DAVector  |    -=    |  DAVector  |
-| DAVector  |    -=    |   float    |
-| DAVector  |    *=    |  DAVector  |
-| DAVector  |    *=    |   float    |
-| DAVector  |    /=    |  DAVector  |
-| DAVector  |    /=    |   float    |
-
-Math functions overloaded:
-
-- sqrt
-- exp
-- log
-- sin
-- cos
-- tan
-- asin
-- acos
-- atan
-- sinh
-- cosh
-- tanh
-- pow
-- abs
-- erf
-
 ## How to compile and use this code
 
 Here I will show you how to compile and use the code in Ubuntu. The following command are tested in Ubuntu 16.04 and WSL Ubuntu 18.04. 
@@ -150,6 +99,56 @@ After we defined the bases, we can define other DA vectors and perform computati
   -1.935069373213407e+00     1 2 0 0    19
   -1.354548499735186e+00     0 3 0 0    25
  ```
+
+Currently, the tpsa lib supports the following operators and math functions. 
+
+Math operator overloaded
+
+| Left hand | Operator | Right hand |
+| :-------: | :------: | :--------: |
+| DAVector  |    +     |  DAVector  |
+|  double   |    +     |  DAVector  |
+| DAVector  |    +     |   float    |
+|           |    +     |  DAVector  |
+| DAVector  |    -     |  DAVector  |
+| DAVector  |    -     |   float    |
+|   float   |    -     |  DAVector  |
+|           |    -     |  DAVector  |
+| DAVector  |    *     |  DAVector  |
+| DAVector  |    *     |   float    |
+|   float   |    *     |  DAVector  |
+| DAVector  |    /     |  DAVector  |
+| DAVector  |    /     |   float    |
+|   float   |    /     |  DAVector  |
+| DAVector  |    =     |  DAVector  |
+| DAVector  |    =     |   float    |
+| DAVector  |    +=    |  DAVector  |
+| DAVector  |    +=    |   float    |
+| DAVector  |    -=    |  DAVector  |
+| DAVector  |    -=    |   float    |
+| DAVector  |    *=    |  DAVector  |
+| DAVector  |    *=    |   float    |
+| DAVector  |    /=    |  DAVector  |
+| DAVector  |    /=    |   float    |
+
+Math functions overloaded:
+
+- sqrt
+- exp
+- log
+- sin
+- cos
+- tan
+- asin
+- acos
+- atan
+- sinh
+- cosh
+- tanh
+- pow
+- abs
+- erf
+
 
 
 ## Acknowledgement
