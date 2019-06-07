@@ -16,7 +16,7 @@ For TPSA and DA, please refer to chapter 8 in [*Lecture Notes on Special Topics 
 
 This code is developed  using the C++ tpsa lib (<https://github.com/zhanghe9704/tpsa>) and pybind11 (<https://github.com/pybind/pybind11>). 
 
-## How to compile and use this code
+## How to compile 
 
 Here I will show you how to compile and use the code in Ubuntu. The following command are tested in Ubuntu 16.04 and WSL Ubuntu 18.04. 
 
@@ -54,6 +54,10 @@ So it may be different in your system.
 
 
 
+## Use the lib in python3
+
+### DA environment initialization and simple DA computation
+
 To use the shared lib in python3, put it in a directory that python3 can find. Start python3 by
 
 `python3`
@@ -65,7 +69,7 @@ In side python, load the lib by
 Initialize the DA environment by `
 
 ```
->>> tpsa.da_init(3, 4, 1000)
+>>> tpsa.da_init(3, 2, 1000)
 0
 ```
 
@@ -86,19 +90,23 @@ After we defined the bases, we can define other DA vectors and perform computati
 >>> x = 0.5 + da[0] + 2.1*da[1]
 >>> y = tpsa.sin(x)
 >>> y.print()
-           V[37]               Base  [ 26 / 35 ]
------------------------------------------------- 
-   4.794255386042030e-01     0 0 0 0     0
-   8.775825618903728e-01     1 0 0 0     1
-   1.842923296276988e+00     0 1 0 0     2
-  -2.397127693021015e-01     2 0 0 0     5
-  -1.006793585347244e+00     1 1 0 0     6
-  -1.057133216606947e+00     0 2 0 0     9
-  -1.462637603150621e-01     3 0 0 0    15
-  -9.214616481384940e-01     2 1 0 0    16
-  -1.935069373213407e+00     1 2 0 0    19
-  -1.354548499735186e+00     0 3 0 0    25
+          V [27]              Base  [ 10 / 10 ]
+----------------------------------------------
+   4.794255386042030e-01     0 0     0
+   8.775825618903728e-01     1 0     1
+   1.842923296276988e+00     0 1     2
+  -2.397127693021015e-01     2 0     3
+  -1.006793585347244e+00     1 1     4
+  -1.057133216606947e+00     0 2     5
+  -1.462637603150621e-01     3 0     6
+  -9.214616481384940e-01     2 1     7
+  -1.935069373213407e+00     1 2     8
+  -1.354548499735186e+00     0 3     9
  ```
+
+
+
+### Operator and function overload
 
 Currently, the tpsa lib supports the following operators and math functions. 
 

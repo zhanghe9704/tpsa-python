@@ -12,6 +12,8 @@ using std::vector;
 
 PYBIND11_MAKE_OPAQUE(std::vector<DAVector>);
 
+Base& get_base() {return da;}
+
 PYBIND11_MODULE(tpsa, m) {
     m.doc() = "TPSA/DA lib";
 
@@ -80,7 +82,10 @@ PYBIND11_MODULE(tpsa, m) {
         .def("set_base", (void (Base::*)(const unsigned int)) &Base::set_base, "n"_a)
         .def("__getitem__", &Base::operator[], "i"_a);
 
-    m.def("base", [](){return da;});
+//    m.def("base", [](){return da;});
+    m.def("base", &get_base, py::return_value_policy::reference);
+    m.def("assign", [](){return DAVector(0);});
+//    m.def("assign", [](){DAVector x=0; return x;});
     m.def("da_init", &da_init, "Initialize the DA environment.", "da_order"_a, "da_dim"_a, "num_da_vectors"_a);
     m.def("da_clear", &da_clear, "Destroy the DA environment");
     m.def("sqrt", (DAVector (*)(const DAVector&)) &sqrt, "da_vector"_a);
