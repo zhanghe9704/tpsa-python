@@ -111,13 +111,13 @@ PYBIND11_MODULE(tpsa, m) {
     m.def("da_int", (void (*)(const DAVector&, unsigned int, DAVector&)) &da_int, "da_vector"_a, "base_id"_a, "da_vector_int"_a);
     m.def("da_der", (DAVector (*)(const DAVector&, unsigned int)) &da_der, "da_vector"_a, "base_id"_a);
     m.def("da_int", (DAVector (*)(const DAVector&, unsigned int))  &da_int, "da_vector"_a, "base_id"_a);
-    m.def("da_subscribe_const", &da_subscribe_const, "iv"_a, "base_id"_a, "x"_a, "ov"_a);
-    m.def("da_subscribe", (void (*)(const DAVector&, unsigned int, const DAVector&, DAVector&)) &da_subscribe, "iv"_a,
+    m.def("da_substitute_const", &da_substitute_const, "iv"_a, "base_id"_a, "x"_a, "ov"_a);
+    m.def("da_substitute", (void (*)(const DAVector&, unsigned int, const DAVector&, DAVector&)) &da_substitute, "iv"_a,
           "base_id"_a, "v"_a, "ov"_a);
-    m.def("da_subscribe", (void (*)(const DAVector&, vector<unsigned int>&, vector<DAVector>&, DAVector&)) &da_subscribe,
+    m.def("da_substitute", (void (*)(const DAVector&, vector<unsigned int>&, vector<DAVector>&, DAVector&)) &da_substitute,
           "iv"_a, "based_id"_a, "v"_a, "ov"_a);
-    m.def("da_subscribe", (void (*)(vector<DAVector>&, vector<unsigned int>&, vector<DAVector>&, vector<DAVector>&))
-          &da_subscribe, "iv"_a, "base_id"_a, "v"_a, "ov"_a);
+    m.def("da_substitute", (void (*)(vector<DAVector>&, vector<unsigned int>&, vector<DAVector>&, vector<DAVector>&))
+          &da_substitute, "iv"_a, "base_id"_a, "v"_a, "ov"_a);
     m.def("da_composition", (void (*)(vector<DAVector>&, vector<DAVector>&, vector<DAVector>&)) &da_composition, "iv"_a,
           "v"_a, "ov"_a);
     m.def("da_composition", (void (*)(vector<DAVector>&, vector<double>&, vector<double>&)) &da_composition, "iv"_a,
