@@ -73,11 +73,11 @@ Initialize the DA environment by `
 0
 ```
 
-The above command initialize a DA environment that holds at most 1000 DA vectors of four variables up to order three. Then let us define the bases as da:
+The above command initialize a DA environment that holds at most 1000 DA vectors of two variables up to order three. Then let us define the bases as da:
 
 `>>> da = tpsa.base()`
 
-Each individual base can be accessed by da[i], where i is the index of the base. In the above case, i ranges in [0,3]. For example,`
+Each individual base can be accessed by da[i], where i is the index of the base. In the above case, i ranges in [0,1]. For example,`
 
 ```
 >>> da[3]
@@ -94,14 +94,14 @@ After we defined the bases, we can define other DA vectors and perform computati
 ----------------------------------------------
    4.794255386042030e-01     0 0     0
    8.775825618903728e-01     1 0     1
-   1.842923296276988e+00     0 1     2
+   1.842923379969783e+00     0 1     2
   -2.397127693021015e-01     2 0     3
-  -1.006793585347244e+00     1 1     4
-  -1.057133216606947e+00     0 2     5
+  -1.006793631068826e+00     1 1     4
+  -1.057133312622268e+00     0 2     5
   -1.462637603150621e-01     3 0     6
-  -9.214616481384940e-01     2 1     7
-  -1.935069373213407e+00     1 2     8
-  -1.354548499735186e+00     0 3     9
+  -9.214616899848915e-01     2 1     7
+  -1.935069548968272e+00     1 2     8
+  -1.354548684277791e+00     0 3     9
  ```
 
 
