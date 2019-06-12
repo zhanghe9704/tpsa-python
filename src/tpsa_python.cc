@@ -120,7 +120,8 @@ PYBIND11_MODULE(tpsa, m) {
           &da_substitute, "iv"_a, "base_id"_a, "v"_a, "ov"_a);
     m.def("da_composition", (void (*)(vector<DAVector>&, vector<DAVector>&, vector<DAVector>&)) &da_composition, "iv"_a,
           "v"_a, "ov"_a);
-    m.def("da_composition", (void (*)(vector<DAVector>&, vector<double>&, vector<double>&)) &da_composition, "iv"_a,
-          "v"_a, "ov"_a);
+//    m.def("da_composition", (void (*)(vector<DAVector>&, vector<double>&, vector<double>&)) &da_composition, "iv"_a,
+//          "v"_a, "ov"_a);
+    m.def("da_composition", [](vector<DAVector>& ivecs, vector<double>& v){vector<double> o(v.size()); da_composition(ivecs, v, o); return o;});
     m.def("inv_map", &inv_map, "ivecs"_a, "dim"_a, "ovecs"_a);
 }
