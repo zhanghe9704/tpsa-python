@@ -85,6 +85,7 @@ PYBIND11_MODULE(tpsa, m) {
 //    m.def("base", [](){return da;});
     m.def("base", &get_base, py::return_value_policy::reference);
     m.def("assign", [](){return DAVector(0);});
+    m.def("assign", [](int n){std::vector<DAVector> v(n); return v;});
 //    m.def("assign", [](){DAVector x=0; return x;});
     m.def("da_init", &da_init, "Initialize the DA environment.", "da_order"_a, "da_dim"_a, "num_da_vectors"_a);
     m.def("da_clear", &da_clear, "Destroy the DA environment");
@@ -122,6 +123,6 @@ PYBIND11_MODULE(tpsa, m) {
           "v"_a, "ov"_a);
 //    m.def("da_composition", (void (*)(vector<DAVector>&, vector<double>&, vector<double>&)) &da_composition, "iv"_a,
 //          "v"_a, "ov"_a);
-    m.def("da_composition", [](vector<DAVector>& ivecs, vector<double>& v){vector<double> o(v.size()); da_composition(ivecs, v, o); return o;});
+    m.def("da_composition", [](vector<DAVector>& ivecs, vector<double>& v){vector<double> o(ivecs.size()); da_composition(ivecs, v, o); return o;});
     m.def("inv_map", &inv_map, "ivecs"_a, "dim"_a, "ovecs"_a);
 }
