@@ -275,12 +275,43 @@ We can also substitute numbers for the bases in x. In that case, v should be a l
 In the n dimensional DA domain, if we want to substitute n DA vectors for all the n  bases in m DA vectors, we can use the function da_composition. 
 
 ```
+>>> from tpsa import *
+>>> da_init(4, 2, 100)
+0
+>>> da = base()
+>>> x = assign(2)
+>>> x[0] = 1 + da[0] + 2*da[1]
+>>> x[1] = 0.5 + 3*da[0] + da[1]
+>>> y = assign(2)
+>>> y[0] = 1 + 2*da[0] + da[1]
+>>> y[1] = 2 + da[0] + 0.5*da[1]
+>>> z = assign(2)
+>>> da_composition(x, y, z)
+>>> z[0].print()
+          V [59]              Base  [ 3 / 15 ]
+----------------------------------------------
+   6.000000000000000e+00     0 0     0
+   4.000000000000000e+00     1 0     1
+   2.000000000000000e+00     0 1     2
 
+>>> z[1].print()
+          V [61]              Base  [ 3 / 15 ]
+----------------------------------------------
+   5.500000000000000e+00     0 0     0
+   7.000000000000000e+00     1 0     1
+   3.500000000000000e+00     0 1     2
 ```
 
+Besides DA vectors, we can also substitute numbers for the bases and the results are numbers too. 
 
+```
+>>> y = [1.0, 2.0]
+>>> z = da_composition(x, y)
+>>> print(z)
+[6.0, 5.5]
+```
 
-
+In both the examples above, the size of the second arguments has to be equal to the dimension of the DA domain. The size of the first arguments can vary and the size of the result is always equal to  the size of the first arguments. 
 
 ### Operators and functions overload
 

@@ -4,3 +4,5 @@
 
 cbp/bin
 cbp/obj
+
+*.so
