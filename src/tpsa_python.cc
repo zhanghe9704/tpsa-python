@@ -1,4 +1,5 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/iostream.h>
 #include <pybind11/operators.h>
 #include <pybind11/stl.h>
 #include <functional>
@@ -125,4 +126,8 @@ PYBIND11_MODULE(tpsa, m) {
 //          "v"_a, "ov"_a);
     m.def("da_composition", [](vector<DAVector>& ivecs, vector<double>& v){vector<double> o(ivecs.size()); da_composition(ivecs, v, o); return o;});
     m.def("inv_map", &inv_map, "ivecs"_a, "dim"_a, "ovecs"_a);
+    m.def("print",[](DAVector& vec) {
+          py::scoped_ostream_redirect stream(std::cout);
+          vec.print();
+    });
 }
