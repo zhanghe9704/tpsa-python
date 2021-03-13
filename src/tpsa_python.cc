@@ -2,6 +2,7 @@
 #include <pybind11/iostream.h>
 #include <pybind11/operators.h>
 #include <pybind11/stl.h>
+#include <complex>
 #include <functional>
 #include <tuple>
 #include <vector>
@@ -9,7 +10,6 @@
 
 namespace py=pybind11;
 using namespace pybind11::literals;
-using std::vector;
 
 PYBIND11_MAKE_OPAQUE(std::vector<DAVector>);
 
@@ -17,6 +17,54 @@ Base& get_base() {return da;}
 
 PYBIND11_MODULE(tpsa, m) {
     m.doc() = "TPSA/DA lib";
+
+    py::class_<std::complex<DAVector>>(m, "CD")
+        .def(py::init<>())
+        .def("complex", ([](std::complex<DAVector>& v, DAVector &r, DAVector &i){v=std::complex<DAVector>(r,i);}))
+        .def("real", [](std::complex<DAVector> &v){return v.real();})
+        .def("real", [](std::complex<DAVector> &v, DAVector &r){v=std::complex<DAVector>(r,v.imag());})
+        .def("imag", [](std::complex<DAVector> &v){return v.imag();})
+        .def("imag", [](std::complex<DAVector> &v, DAVector &i){v=std::complex<DAVector>(v.real(),i);})
+        .def(py::self += double())
+        .def(py::self += int())
+        .def(py::self += py::self)
+        .def(py::self -= double())
+        .def(py::self -= int())
+        .def(py::self -= py::self)
+        .def(py::self *= double())
+        .def(py::self *= int())
+        .def(py::self *= py::self)
+        .def(py::self /= double())
+        .def(py::self /= int())
+        .def(py::self /= py::self)
+        .def(py::self + py::self)
+        .def(double() + py::self)
+        .def(py::self + double())
+        .def(py::self - py::self)
+        .def(double() - py::self)
+        .def(py::self - double())
+        .def(py::self * py::self)
+        .def(double() * py::self)
+        .def(py::self * double())
+        .def(py::self / py::self)
+        .def(double() / py::self)
+        .def(py::self / double())
+        .def(+ py::self)
+        .def(- py::self);
+
+    py::class_<std::vector<std::complex<DAVector>>>(m, "CDVectorList")
+        .def(py::init<>())
+        .def("assign", ([](std::vector<std::complex<DAVector>> &v, int n){std::complex<DAVector> x(0*da[0],0*da[0]); for(int i=0; i<n; ++i) v.push_back(x); }))
+        .def("clear", &std::vector<std::complex<DAVector>>::clear)
+        .def("pop_back", &std::vector<std::complex<DAVector>>::pop_back)
+        .def("push_back", (void (std::vector<std::complex<DAVector>>::*)(const std::complex<DAVector> &)) &std::vector<std::complex<DAVector>>::push_back)
+        .def("__len__", [](const std::vector<std::complex<DAVector>> &v){return v.size();})
+        .def("__getitem__", [](const std::vector<std::complex<DAVector>> &v, int i){if (i<0 || i>=v.size()) throw py::index_error(); return v[i];})
+        .def("__setitem__", [](std::vector<std::complex<DAVector>> &v, int i, std::complex<DAVector> x){if (i<0 || i>=v.size()) throw py::index_error(); v[i]=x;})
+        .def("__iter__", [](std::vector<std::complex<DAVector>> &v) {
+             return py::make_iterator(v.begin(), v.end());
+             }, py::keep_alive<0,1>()); /* keep vector alive while iterator is used */
+
 
     py::class_<std::vector<DAVector>>(m, "DAVectorList")
         .def(py::init<>())
@@ -40,10 +88,10 @@ PYBIND11_MODULE(tpsa, m) {
         .def("length", &DAVector::length)
         .def("n_element", &DAVector::n_element)
         .def("element", (double (DAVector::*)(int)) &DAVector::element, "i"_a)
-        .def("index_element", [](const DAVector& v, unsigned int idx){vector<unsigned int> c; double elem; v.element(idx, c, elem);
+        .def("index_element", [](const DAVector& v, unsigned int idx){std::vector<unsigned int> c; double elem; v.element(idx, c, elem);
             return std::make_tuple(c,elem);}, "idx"_a)
-        .def("element", (double (DAVector::*)(vector<int>)) &DAVector::element, "idx"_a)
-        .def("set_element", (void (DAVector::*)(vector<int>, double)) &DAVector::set_element, "idx"_a, "elem"_a)
+        .def("element", (double (DAVector::*)(std::vector<int>)) &DAVector::element, "idx"_a)
+        .def("set_element", (void (DAVector::*)(std::vector<int>, double)) &DAVector::set_element, "idx"_a, "elem"_a)
         .def("reset", &DAVector::reset)
         .def("reset_const", &DAVector::reset_const, "x"_a)
         .def("clean", (void (DAVector::*)()) &DAVector::clean)
@@ -92,9 +140,12 @@ PYBIND11_MODULE(tpsa, m) {
     m.def("base", &get_base, py::return_value_policy::reference);
     m.def("assign", [](){return DAVector(0);});
     m.def("assign", [](int n){std::vector<DAVector> v(n); return v;});
+    m.def("assign_cd", [](int n){std::vector<std::complex<DAVector>> v(n); return v;});
+    m.def("complex", [](DAVector &r, DAVector &i){return std::complex<DAVector>(r,i);});
     m.def("da_eps", [](){return DAVector::eps;});
+    m.def("da_set_eps", &da_set_eps, "Set the cut-off value for DA vectors.", "eps"_a);
 //    m.def("assign", [](){DAVector x=0; return x;});
-    m.def("da_init", &da_init, "Initialize the DA environment.", "da_order"_a, "da_dim"_a, "num_da_vectors"_a);
+    m.def("da_init", &da_init, "Initialize the DA environment.", "da_order"_a, "da_dim"_a, "num_da_vectors"_a, "bool"_a=true);
     m.def("da_clear", &da_clear, "Destroy the DA environment");
     m.def("sqrt", (DAVector (*)(const DAVector&)) &sqrt, "da_vector"_a);
     m.def("exp", (DAVector (*)(const DAVector&)) &exp, "da_vector"_a);
@@ -123,18 +174,28 @@ PYBIND11_MODULE(tpsa, m) {
     m.def("da_substitute_const", &da_substitute_const, "iv"_a, "base_id"_a, "x"_a, "ov"_a);
     m.def("da_substitute", (void (*)(const DAVector&, unsigned int, const DAVector&, DAVector&)) &da_substitute, "iv"_a,
           "base_id"_a, "v"_a, "ov"_a);
-    m.def("da_substitute", (void (*)(const DAVector&, vector<unsigned int>&, vector<DAVector>&, DAVector&)) &da_substitute,
+    m.def("da_substitute", (void (*)(const DAVector&, std::vector<unsigned int>&, std::vector<DAVector>&, DAVector&)) &da_substitute,
           "iv"_a, "based_id"_a, "v"_a, "ov"_a);
-    m.def("da_substitute", (void (*)(vector<DAVector>&, vector<unsigned int>&, vector<DAVector>&, vector<DAVector>&))
+    m.def("da_substitute", (void (*)(std::vector<DAVector>&, std::vector<unsigned int>&, std::vector<DAVector>&, std::vector<DAVector>&))
           &da_substitute, "iv"_a, "base_id"_a, "v"_a, "ov"_a);
-    m.def("da_composition", (void (*)(vector<DAVector>&, vector<DAVector>&, vector<DAVector>&)) &da_composition, "iv"_a,
+    m.def("da_composition", (void (*)(std::vector<DAVector>&, std::vector<DAVector>&, std::vector<DAVector>&)) &da_composition, "iv"_a,
           "v"_a, "ov"_a);
-//    m.def("da_composition", (void (*)(vector<DAVector>&, vector<double>&, vector<double>&)) &da_composition, "iv"_a,
-//          "v"_a, "ov"_a);
-    m.def("da_composition", [](vector<DAVector>& ivecs, vector<double>& v){vector<double> o(ivecs.size()); da_composition(ivecs, v, o); return o;});
+    m.def("da_composition", [](std::vector<DAVector>& ivecs, std::vector<double>& v){std::vector<double> o(ivecs.size()); da_composition(ivecs, v, o); return o;});
+    m.def("da_composition", (void (*)(std::vector<DAVector>&, std::vector<std::complex<double>>&,
+                                      std::vector<std::complex<double>>&)) &da_composition, "ivecs"_a, "v"_a, "ovecs"_a);
+    m.def("da_composition", (void (*)(std::vector<DAVector>&, std::vector<std::complex<DAVector>>&,
+                                      std::vector<std::complex<DAVector>>&)) &da_composition, "ivecs"_a, "v"_a, "ovecs"_a);
+    m.def("da_composition", (void (*)(std::vector<std::complex<DAVector>>&, std::vector<std::complex<DAVector>>&,
+                                      std::vector<std::complex<DAVector>>&)) &da_composition, "ivecs"_a, "v"_a, "ovecs"_a);
+    m.def("da_composition", (void (*)(std::vector<std::complex<DAVector>>&, std::vector<DAVector>&,
+                                      std::vector<std::complex<DAVector>>&)) &da_composition, "ivecs"_a, "v"_a, "ovecs"_a);
     m.def("inv_map", &inv_map, "ivecs"_a, "dim"_a, "ovecs"_a);
     m.def("print",[](DAVector& vec) {
           py::scoped_ostream_redirect stream(std::cout);
           vec.print();
+    });
+    m.def("print",[](std::complex<DAVector>& vec) {
+          py::scoped_ostream_redirect stream(std::cout);
+          std::cout<<vec;
     });
 }
