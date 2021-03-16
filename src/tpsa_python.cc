@@ -25,6 +25,7 @@ PYBIND11_MODULE(tpsa, m) {
         .def("real", [](std::complex<DAVector> &v, DAVector &r){v=std::complex<DAVector>(r,v.imag());})
         .def("imag", [](std::complex<DAVector> &v){return v.imag();})
         .def("imag", [](std::complex<DAVector> &v, DAVector &i){v=std::complex<DAVector>(v.real(),i);})
+        .def("print", [](std::complex<DAVector> &v){std::cout<<v;})
         .def(py::self += double())
         .def(py::self += int())
         .def(py::self += py::self)
@@ -181,8 +182,10 @@ PYBIND11_MODULE(tpsa, m) {
     m.def("da_composition", (void (*)(std::vector<DAVector>&, std::vector<DAVector>&, std::vector<DAVector>&)) &da_composition, "iv"_a,
           "v"_a, "ov"_a);
     m.def("da_composition", [](std::vector<DAVector>& ivecs, std::vector<double>& v){std::vector<double> o(ivecs.size()); da_composition(ivecs, v, o); return o;});
-    m.def("da_composition", (void (*)(std::vector<DAVector>&, std::vector<std::complex<double>>&,
-                                      std::vector<std::complex<double>>&)) &da_composition, "ivecs"_a, "v"_a, "ovecs"_a);
+    m.def("da_composition", [](std::vector<DAVector>& ivecs, std::vector<std::complex<double>>& v) {std::vector<std::complex<double>> o(ivecs.size());
+           da_composition(ivecs, v, o); return o; });
+//    m.def("da_composition", (void (*)(std::vector<DAVector>&, std::vector<std::complex<double>>&,
+//                                      std::vector<std::complex<double>>&)) &da_composition, "ivecs"_a, "v"_a, "ovecs"_a);
     m.def("da_composition", (void (*)(std::vector<DAVector>&, std::vector<std::complex<DAVector>>&,
                                       std::vector<std::complex<DAVector>>&)) &da_composition, "ivecs"_a, "v"_a, "ovecs"_a);
     m.def("da_composition", (void (*)(std::vector<std::complex<DAVector>>&, std::vector<std::complex<DAVector>>&,
