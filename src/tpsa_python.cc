@@ -184,8 +184,6 @@ PYBIND11_MODULE(tpsa, m) {
     m.def("da_composition", [](std::vector<DAVector>& ivecs, std::vector<double>& v){std::vector<double> o(ivecs.size()); da_composition(ivecs, v, o); return o;});
     m.def("da_composition", [](std::vector<DAVector>& ivecs, std::vector<std::complex<double>>& v) {std::vector<std::complex<double>> o(ivecs.size());
            da_composition(ivecs, v, o); return o; });
-//    m.def("da_composition", (void (*)(std::vector<DAVector>&, std::vector<std::complex<double>>&,
-//                                      std::vector<std::complex<double>>&)) &da_composition, "ivecs"_a, "v"_a, "ovecs"_a);
     m.def("da_composition", (void (*)(std::vector<DAVector>&, std::vector<std::complex<DAVector>>&,
                                       std::vector<std::complex<DAVector>>&)) &da_composition, "ivecs"_a, "v"_a, "ovecs"_a);
     m.def("da_composition", (void (*)(std::vector<std::complex<DAVector>>&, std::vector<std::complex<DAVector>>&,
