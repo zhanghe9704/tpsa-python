@@ -165,8 +165,7 @@ If we have a multiple-dimensional DA vector, we can substitute DA vectors for mo
 0
 >>> da = base()
 >>> x = 1.0 + da[0] + 2*da[1] + 0.2*da[2]
->>> v = DAVectorList()
->>> v.assign(2)
+>>> v = assign(2)
 >>> v[0] = 1 + 0.5*da[0]+ 3*da[1] + 2*da[2]
 >>> v[1] = 2 + da[1] + da[2]
 >>> idx = [0,1]
@@ -212,14 +211,7 @@ In the above code, we substitute DA vectors stored in "v" for the bases determin
    1.000000000000000e+00     0 0 1     3
 ```
 
-Please note that here we use another way to create the DAVectorList. The following two commands
-
-```
->>> v = DAVectorList()
->>> v.assign(2)
-```
-
-can be replaced by one:
+Please note that here we use the following  command to create a DAVectorList:
 
 ```
 >>> v = assign(2)
@@ -313,6 +305,8 @@ Besides DA vectors, we can also substitute numbers for the bases and the results
 
 In both the examples above, the size of the second arguments has to be equal to the dimension of the DA domain. The size of the first arguments can vary and the size of the result is always equal to  the size of the first arguments. 
 
+For more examples of using this lib, please check out the files in the **examples** folder.
+
 ### Operators and functions overload
 
 Currently, the tpsa lib supports the following operators and math functions. 
@@ -363,6 +357,10 @@ Math functions overloaded:
 - pow
 - abs
 - erf
+
+## Known issues
+
+1. When some temporary variables in the C++ lib go out of scope, the memory of them are not released immediately as in pure C++ environment, although eventually they will be released a few steps after the function call finishes. This means we may need a larger DA vector pool in Python than in C++. Usually a pool size of a few hundred to a few thousand should be large enough, which is not a problem for a modern personal computer.   
 
 
 
