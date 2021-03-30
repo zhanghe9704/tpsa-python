@@ -5,8 +5,10 @@ and calculate sin(x).
 Results are printed to screen.  
 """
 
+import pybind11
 import tpsa
-tpsa.da_init(4, 1, 100)
+
+tpsa.da_init(4, 1, 129)
 da = tpsa.base()
 x = 1+da[0]
 y = tpsa.sin(x)

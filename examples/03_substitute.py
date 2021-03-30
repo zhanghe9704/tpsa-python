@@ -32,8 +32,8 @@ print("3. substitute DA vectors")
 idx = [0,1]
 #Create a DAVectorList and assigan values into it. 
 ly = tpsa.DAVectorList()
-ly.push_back(1.3 + 0.5*da[1])
-ly.push_back(0.4+1.2*da[2])
+ly.append(1.3 + 0.5*da[1])
+ly.append(0.4+1.2*da[2])
 #Substitute two DA vectors in ly for the 1st and 2nd variables in x respectively 
 # and output to y. 
 tpsa.da_substitute(x,idx,ly,y)
@@ -42,13 +42,11 @@ y.print()
 
 print("4. substitute DA vectors (bunch processing)")
 #Another way to assign values into a DAVectorList. 
-lx = tpsa.DAVectorList()
-lx.assign(2)
+lx = tpsa.assign(2)
 lx[0] = 1 + da[0]
 lx[1] = 2 + da[1]
 #Create lz for the result
-lz = tpsa.DAVectorList()
-lz.assign(2)
+lz = tpsa.assign(2)
 tpsa.da_substitute(lx, idx, ly, lz)
 lz[0].print()
 lz[1].print()
