@@ -3,7 +3,6 @@
 #include <pybind11/operators.h>
 #include <pybind11/stl.h>
 #include <pybind11/stl_bind.h>
-//#include <pybind11/complex.h>
 #include <pybind11/functional.h>
 #include <complex>
 #include <functional>
@@ -26,9 +25,7 @@ PYBIND11_MODULE(tpsa, m) {
     m.doc() = "TPSA/DA lib";
 
     py::class_<std::complex<DAVector>>(m, "CD")
-//        .def(py::init([](){return std::complex<DAVector>(0,0);}),py::return_value_policy::reference)
         .def(py::init<>(),py::return_value_policy::reference)
-//        .def("complex", ([](std::complex<DAVector>& v, DAVector &r, DAVector &i){get_real(v)=r; get_imag(v)=i;}), py::return_value_policy::reference)
         .def("real", [](std::complex<DAVector> &v){return get_real(v);}, py::return_value_policy::reference)
         .def("real", [](std::complex<DAVector> &v, DAVector &r){get_real(v)=r;}, py::return_value_policy::reference)
         .def("imag", [](std::complex<DAVector> &v){return get_imag(v);}, py::return_value_policy::reference)
@@ -63,34 +60,6 @@ PYBIND11_MODULE(tpsa, m) {
 
     py::bind_vector<std::vector<std::complex<DAVector>>>(m, "CDVectorList");
     py::bind_vector<std::vector<DAVector>>(m, "DAVectorList");
-
-//    py::class_<std::vector<std::complex<DAVector>>>(m, "CDVectorList")
-//        .def(py::init<>(), py::return_value_policy::reference)
-//        .def("assign", ([](std::vector<std::complex<DAVector>> &v, int n){std::complex<DAVector> x(0*da[0],0*da[0]); for(int i=0; i<n; ++i) v.push_back(x); }), py::return_value_policy::reference)
-//        .def("clear", &std::vector<std::complex<DAVector>>::clear, py::return_value_policy::reference)
-//        .def("pop_back", &std::vector<std::complex<DAVector>>::pop_back, py::return_value_policy::reference)
-//        .def("push_back", (void (std::vector<std::complex<DAVector>>::*)(const std::complex<DAVector> &)) &std::vector<std::complex<DAVector>>::push_back, py::return_value_policy::reference)
-//        .def("__len__", [](const std::vector<std::complex<DAVector>> &v){return v.size();})
-//        .def("__getitem__", [](const std::vector<std::complex<DAVector>> &v, int i){if (i<0 || i>=v.size()) throw py::index_error(); return v[i];}, py::return_value_policy::reference)
-//        .def("__setitem__", [](std::vector<std::complex<DAVector>> &v, int i, std::complex<DAVector> &x){if (i<0 || i>=v.size()) throw py::index_error(); v[i]=x;}, py::return_value_policy::reference)
-//        .def("__iter__", [](std::vector<std::complex<DAVector>> &v) {
-//             return py::make_iterator(v.begin(), v.end());
-//             }, py::keep_alive<0,1>()); /* keep vector alive while iterator is used */
-
-
-//    py::class_<std::vector<DAVector>>(m, "DAVectorList")
-//        .def(py::init<>(), py::return_value_policy::reference)
-//        .def("assign", ([](std::vector<DAVector> &v, int n){for(int i=0; i<n; ++i) v.push_back(0); }), py::return_value_policy::reference)
-////        .def("assign", ([](std::vector<DAVector> &v, int n){DAVector x=0; for(int i=0; i<n; ++i) v.push_back(x); }), py::return_value_policy::reference)
-//        .def("clear", &std::vector<DAVector>::clear, py::return_value_policy::reference)
-//        .def("pop_back", &std::vector<DAVector>::pop_back, py::return_value_policy::reference)
-//        .def("push_back", (void (std::vector<DAVector>::*)(const DAVector &)) &std::vector<DAVector>::push_back, py::return_value_policy::reference)
-//        .def("__len__", [](const std::vector<DAVector> &v){return v.size();})
-//        .def("__getitem__", [](const std::vector<DAVector> &v, int i){if (i<0 || i>=v.size()) throw py::index_error(); return v[i];}, py::return_value_policy::reference)
-//        .def("__setitem__", [](std::vector<DAVector> &v, int i, DAVector &x){if (i<0 || i>=v.size()) throw py::index_error(); v[i]=x;}, py::return_value_policy::reference)
-//        .def("__iter__", [](std::vector<DAVector> &v) {
-//             return py::make_iterator(v.begin(), v.end());
-//             }, py::keep_alive<0,1>()); /* keep vector alive while iterator is used */
 
     py::class_<DAVector>(m, "DAVector")
         .def(py::init<>())
@@ -149,7 +118,6 @@ PYBIND11_MODULE(tpsa, m) {
         .def("set_base", (void (Base::*)(const unsigned int)) &Base::set_base, "n"_a)
         .def("__getitem__", &Base::operator[], "i"_a, py::return_value_policy::reference);
 
-//    m.def("base", [](){return da;});
     m.def("base", &get_base, py::return_value_policy::reference);
     m.def("assign", [](){return DAVector(0);});
     m.def("assign", [](int n){std::vector<DAVector> v(n); return v;});
