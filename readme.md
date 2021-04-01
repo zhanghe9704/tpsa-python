@@ -113,32 +113,32 @@ The list of mathematical operators and functions supported can be found in the f
 Let us  see a 1D example first. Assume we want to calculate the Taylor expansion of sin(x) at x=1 up to the forth order. We can do it as follows. 
 
 ```
->>> from tpsa import *
->>> da_init(4, 1, 100)
->>> da = base()
->>> x = sin(1+da[0])
+>>> import tpsa
+>>> tpsa.da_init(4,1,100)
+0
+>>> da = tpsa.base()
+>>> x = tpsa.sin(1+da[0])
 >>> x.print()
-          V [35]              Base  [ 5 / 5 ]
-----------------------------------------------
-   8.414709848078965e-01     0     0
-   5.403023058681398e-01     1     1
-  -4.207354924039483e-01     2     2
-  -9.005038431135663e-02     3     3
-   3.506129103366235e-02     4     4
+ I           V [16]              Base  [ 5 / 5 ]
+------------------------------------------------
+ 1   8.414709848078965e-01     0     0
+ 2   5.403023058681398e-01     1     1
+ 3  -4.207354924039483e-01     2     2
+ 4  -9.005038431135663e-02     3     3
+ 5   3.506129103366235e-02     4     4
 ```
 
 Now if we want to evaluate sin(1.2) using the above extension, we need to substitute 0.2 for the variable (base) in the DA vector x. 
 
 ```
->>> y = assign()  #Prepare a DA vector to store the result
->>> da_substitute_const(x, 1, 0.2, y)
+>>> y = tpsa.da_substitute_const(x, 0, 0.2)
 >>> y.print()
-          V [21]              Base  [ 1 / 5 ]
-----------------------------------------------
-   9.320377212765296e-01     0     0
+ I           V [20]              Base  [ 1 / 5 ]
+------------------------------------------------
+ 1   9.320377212765296e-01     0     0
 ```
 
-In the second line, we substitute 0.2 for the 1st variable in x and store the result in y. Generally, y is a DA vector, considering x can have more than one bases. But for this specific case, y is just a real number. 
+In the first line, we substitute 0.2 for the 1st variable in x and store the result in y. Generally, y is a DA vector, considering x can have more than one bases. But for this specific case, y is just a real number. 
 
 
 
@@ -146,161 +146,121 @@ Besides substitute a real number, we can substitute a DA vector, too.
 
 ```
 >>> v = 0.2 + da[0]
->>>  da_substitute(x, 0, v, y)
+>>> y = tpsa.da_substitute(x, 0, v)
 >>> y.print()
-          V [21]              Base  [ 5 / 5 ]
-----------------------------------------------
-   9.320377212765296e-01     0     0
-   3.623240241022748e-01     1     1
-  -4.663510131426833e-01     2     2
-  -6.200135148442674e-02     3     3
-   3.506129103366235e-02     4     4
+ I           V [26]              Base  [ 5 / 5 ]
+------------------------------------------------
+ 1   9.320377212765296e-01     0     0
+ 2   3.623240241022748e-01     1     1
+ 3  -4.663510131426833e-01     2     2
+ 4  -6.200135148442674e-02     3     3
+ 5   3.506129103366235e-02     4     4
 ```
 
 If we have a multiple-dimensional DA vector, we can substitute DA vectors for more than one bases at once. 
 
 ```
->>> from tpsa import *
->>> da_init(4, 3, 100)
+>>> import tpsa
+>>> tpsa.da_init(4, 3, 100)
 0
->>> da = base()
+>>> da = tpsa.base()
 >>> x = 1.0 + da[0] + 2*da[1] + 0.2*da[2]
->>> v = assign(2)
+>>> v = tpsa.assign(2)
 >>> v[0] = 1 + 0.5*da[0]+ 3*da[1] + 2*da[2]
 >>> v[1] = 2 + da[1] + da[2]
 >>> idx = [0,1]
->>> y = assign()
->>> da_substitute(x, idx, v, y)
+>>> y = tpsa.da_substitute(x, idx, v)
 >>> y.print()
-          V [49]              Base  [ 4 / 35 ]
-----------------------------------------------
-   6.000000000000000e+00     0 0 0     0
-   5.000000000000000e-01     1 0 0     1
-   5.000000000000000e+00     0 1 0     2
-   4.200000000000000e+00     0 0 1     3
+ I           V [32]              Base  [ 4 / 35 ]
+------------------------------------------------
+ 1   6.000000000000000e+00     0 0 0     0
+ 2   5.000000000000000e-01     1 0 0     1
+ 3   5.000000000000000e+00     0 1 0     2
+ 4   4.200000000000000e+00     0 0 1     3
 ```
 
-In the above code, we substitute DA vectors stored in "v" for the bases determined by "idx". Note that the size of "idx" should be equal to the size of "v".  This function can be carried out in bunches, which means "x" and "y" can be a DAVectorLists that store multiple DA vectors. The substitution will be performed on all the DA vectors in "x" and the results are saved into "y".  An example is shown as follows. 
-
-```
->>> from tpsa import *
->>> da_init(4, 3, 100)
-0
->>> da = base()
->>> x = assign(2)
->>> x[0] = 1.0 + da[0] + 2*da[1] + 0.2*da[2]
->>> x[1] = 0.5 + da[2]
->>> v = assign(2)
->>> v[0] = 1 + 0.5*da[0]+ 3*da[1] + 2*da[2]
->>> v[1] = 2 + da[1] + da[2]
->>> idx = [0,1]
->>> y = assign(2)
->>> da_substitute(x, idx, v, y)
->>> y[0].print()
-          V [68]              Base  [ 4 / 35 ]
-----------------------------------------------
-   6.000000000000000e+00     0 0 0     0
-   5.000000000000000e-01     1 0 0     1
-   5.000000000000000e+00     0 1 0     2
-   4.200000000000000e+00     0 0 1     3
-
->>> y[1].print()
-          V [70]              Base  [ 4 / 35 ]
-----------------------------------------------
-   5.000000000000000e-01     0 0 0     0
-   1.000000000000000e+00     0 0 1     3
-```
+In the above code, we substitute DA vectors stored in "v" for the bases determined by "idx". The size of "idx" should be equal to the size of "v".  
 
 Please note that here we use the following  command to create a DAVectorList:
 
 ```
->>> v = assign(2)
+>>> v = tpsa.assign(2)
 ```
 
 The function assign() without argument create a DA vector and assign(n) with a integer n create a DAVectorList that contains n DA vectors with all coefficients zero. 
 
- ```
->>> from tpsa import *
->>> da_init(4, 3, 100)
+ The substitution can be carried out in bunches, which means "x" and "y" can be a DAVectorLists that store multiple DA vectors.The substitution will be performed on all the DA vectors in "x" and the results are saved into "y".  An example is shown as follows. 
+
+```
+>>> import tpsa
+>>> tpsa.da_init(4, 3, 100)
 0
->>> da = base()
->>> x = assign(2)
+>>> da = tpsa.base()
+>>> x = tpsa.assign(2)
 >>> x[0] = 1.0 + da[0] + 2*da[1] + 0.2*da[2]
 >>> x[1] = 0.5 + da[2]
->>> v = assign(3)
+>>> v = tpsa.assign(2)
 >>> v[0] = 1 + 0.5*da[0]+ 3*da[1] + 2*da[2]
->>> v[1] = 0.5 + da[2]
->>> v[2] = da[0] + 3.3*da[1]
->>> y = assign(2)
->>> da_composition(x, v, y)
+>>> v[1] = 2 + da[1] + da[2]
+>>> idx = [0,1]
+>>> y = tpsa.assign(2)
+>>> tpsa.da_substitute(x, idx, v, y)
 >>> y[0].print()
-          V [83]              Base  [ 4 / 35 ]
-----------------------------------------------
-   3.000000000000000e+00     0 0 0     0
-   7.000000000000000e-01     1 0 0     1
-   3.660000000000000e+00     0 1 0     2
-   4.000000000000000e+00     0 0 1     3
+ I           V [60]              Base  [ 4 / 35 ]
+------------------------------------------------
+ 1   6.000000000000000e+00     0 0 0     0
+ 2   5.000000000000000e-01     1 0 0     1
+ 3   5.000000000000000e+00     0 1 0     2
+ 4   4.200000000000000e+00     0 0 1     3
 
 >>> y[1].print()
-          V [85]              Base  [ 3 / 35 ]
-----------------------------------------------
-   5.000000000000000e-01     0 0 0     0
-   1.000000000000000e+00     1 0 0     1
-   3.300000000000000e+00     0 1 0     2
- ```
-
-In the above example, x, v, and y are DAVectorLists. We substitute the DA vectors in v for the bases in x and save the results in y. The size of v should be equal to the dimension of the DA domain. The size of y should be equal to the size of x. 
-
-We can also substitute numbers for the bases in x. In that case, v should be a list of numbers and the results are numbers, too. 
-
+ I           V [61]              Base  [ 4 / 35 ]
+------------------------------------------------
+ 1   5.000000000000000e-01     0 0 0     0
+ 2   1.000000000000000e+00     0 0 1     3
 ```
->>> v = [1.0, 2.2, 3]
->>> y = da_composition(x, v)
->>> print(y)
-[7.0, 3.5]
-```
-
-
 
 ### Composition of DA vectors
 
 In the n dimensional DA domain, if we want to substitute n DA vectors for all the n  bases in m DA vectors, we can use the function da_composition. 
 
 ```
->>> from tpsa import *
->>> da_init(4, 2, 100)
+>>> import tpsa
+>>> tpsa.da_init(4, 3, 100)
 0
->>> da = base()
->>> x = assign(2)
->>> x[0] = 1 + da[0] + 2*da[1]
->>> x[1] = 0.5 + 3*da[0] + da[1]
->>> y = assign(2)
->>> y[0] = 1 + 2*da[0] + da[1]
->>> y[1] = 2 + da[0] + 0.5*da[1]
->>> z = assign(2)
->>> da_composition(x, y, z)
->>> z[0].print()
-          V [59]              Base  [ 3 / 15 ]
-----------------------------------------------
-   6.000000000000000e+00     0 0     0
-   4.000000000000000e+00     1 0     1
-   2.000000000000000e+00     0 1     2
+>>> da = tpsa.base()
+>>> x = tpsa.assign(2)
+>>> x[0] = 1.0 + da[0] + 2*da[1] + 0.2*da[2]
+>>> x[1] = 0.5 + da[2]
+>>> v = tpsa.assign(3)
+>>> v[0] = 1 + 0.5*da[0]+ 3*da[1] + 2*da[2]
+>>> v[1] = 0.5 + da[2]
+>>> v[2] = da[0] + 3.3*da[1]
+>>> y = tpsa.assign(2)
+>>> tpsa.da_composition(x, v, y)
+>>> y[0].print()
+ I           V [60]              Base  [ 4 / 35 ]
+------------------------------------------------
+ 1   3.000000000000000e+00     0 0 0     0
+ 2   7.000000000000000e-01     1 0 0     1
+ 3   3.660000000000000e+00     0 1 0     2
+ 4   4.000000000000000e+00     0 0 1     3
 
->>> z[1].print()
-          V [61]              Base  [ 3 / 15 ]
-----------------------------------------------
-   5.500000000000000e+00     0 0     0
-   7.000000000000000e+00     1 0     1
-   3.500000000000000e+00     0 1     2
+>>> y[1].print()
+ I           V [61]              Base  [ 3 / 35 ]
+------------------------------------------------
+ 1   5.000000000000000e-01     0 0 0     0
+ 2   1.000000000000000e+00     1 0 0     1
+ 3   3.300000000000000e+00     0 1 0     2
 ```
 
 Besides DA vectors, we can also substitute numbers for the bases and the results are numbers too. 
 
 ```
->>> y = [1.0, 2.0]
->>> z = da_composition(x, y)
->>> print(z)
-[6.0, 5.5]
+>>> v = [1.0, 2.2, 3]
+>>> y = tpsa.da_composition(x, v)
+>>> print(y)
+[7.0, 3.5]
 ```
 
 In both the examples above, the size of the second arguments has to be equal to the dimension of the DA domain. The size of the first arguments can vary and the size of the result is always equal to  the size of the first arguments. 
