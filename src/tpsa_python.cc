@@ -188,10 +188,13 @@ PYBIND11_MODULE(tpsa, m) {
     m.def("da_der", (DAVector (*)(const DAVector&, unsigned int)) &da_der, "da_vector"_a, "base_id"_a);
     m.def("da_int", (DAVector (*)(const DAVector&, unsigned int))  &da_int, "da_vector"_a, "base_id"_a);
     m.def("da_substitute_const", &da_substitute_const, "iv"_a, "base_id"_a, "x"_a, "ov"_a);
+    m.def("da_substitute_const", [](const DAVector iv, unsigned int idx, double x){DAVector ov; da_substitute_const(iv, idx, x, ov); return ov;});
     m.def("da_substitute", (void (*)(const DAVector&, unsigned int, const DAVector&, DAVector&)) &da_substitute, "iv"_a,
           "base_id"_a, "v"_a, "ov"_a);
+    m.def("da_substitute", [](const DAVector iv, unsigned int idx, const DAVector v){DAVector ov; da_substitute(iv, idx, v, ov); return ov;});
     m.def("da_substitute", (void (*)(const DAVector&, std::vector<unsigned int>&, std::vector<DAVector>&, DAVector&)) &da_substitute,
           "iv"_a, "based_id"_a, "v"_a, "ov"_a);
+    m.def("da_substitute", [](const DAVector iv, std::vector<unsigned int>& idx, std::vector<DAVector>& v){DAVector ov; da_substitute(iv, idx, v, ov); return ov;});
     m.def("da_substitute", (void (*)(std::vector<DAVector>&, std::vector<unsigned int>&, std::vector<DAVector>&, std::vector<DAVector>&))
           &da_substitute, "iv"_a, "base_id"_a, "v"_a, "ov"_a);
     m.def("da_composition", (void (*)(std::vector<DAVector>&, std::vector<DAVector>&, std::vector<DAVector>&)) &da_composition, "iv"_a,
