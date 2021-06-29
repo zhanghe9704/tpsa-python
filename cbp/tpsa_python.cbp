@@ -50,7 +50,6 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="../include/complex.h" />
 		<Unit filename="../src/tpsa_python.cc" />
 		<Unit filename="../tpsa/include/da.h" />
 		<Unit filename="../tpsa/include/tpsa_extend.h" />
