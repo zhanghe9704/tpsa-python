@@ -181,4 +181,11 @@ PYBIND11_MODULE(tpsa, m) {
           py::scoped_ostream_redirect stream(std::cout);
           std::cout<<vec;
     });
+    m.def("read_da_from_file", &read_da_from_file);
+    m.def("read_cd_from_file", &read_cd_from_file);
+    m.def("devide_by_element", &devide_by_element);
+    m.def("compare_da_vectors", &compare_da_vectors);
+    m.def("compare_da_with_file", &compare_da_with_file);
+    m.def("compare_cd_vectors", &compare_cd_vectors);
+    m.def("compare_cd_with_file", &compare_cd_with_file);
 }
