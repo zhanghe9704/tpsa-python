@@ -56,7 +56,19 @@ PYBIND11_MODULE(tpsa, m) {
         .def(double() / py::self)
         .def(py::self / double())
         .def(+ py::self)
-        .def(- py::self);
+        .def(- py::self)
+        .def(py::self += std::complex<int>())
+        .def(py::self -= std::complex<int>())
+        .def(py::self *= std::complex<int>())
+        .def(py::self /= std::complex<int>())
+        .def(py::self += std::complex<double>())
+        .def(py::self -= std::complex<double>())
+        .def(py::self *= std::complex<double>())
+        .def(py::self /= std::complex<double>())
+        .def("__add__", [](const std::complex<DAVector>& c, DAVector& v){return c+v;}, py::is_operator())
+        .def("__sub__", [](const std::complex<DAVector>& c, DAVector& v){return c-v;}, py::is_operator())
+        .def("__mul__", [](const std::complex<DAVector>& c, DAVector& v){return c*v;}, py::is_operator())
+        .def("__truediv__", [](const std::complex<DAVector>& c, DAVector& v){return c/v;}, py::is_operator());
 
     py::bind_vector<std::vector<std::complex<DAVector>>>(m, "CDVectorList");
     py::bind_vector<std::vector<DAVector>>(m, "DAVectorList");
