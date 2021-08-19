@@ -46,15 +46,23 @@ PYBIND11_MODULE(tpsa, m) {
         .def(py::self + py::self)
         .def(double() + py::self)
         .def(py::self + double())
+        .def(int() + py::self)
+        .def(py::self + int())
         .def(py::self - py::self)
         .def(double() - py::self)
         .def(py::self - double())
+        .def(int() - py::self)
+        .def(py::self - int())
         .def(py::self * py::self)
         .def(double() * py::self)
         .def(py::self * double())
+        .def(int() * py::self)
+        .def(py::self * int())
         .def(py::self / py::self)
         .def(double() / py::self)
         .def(py::self / double())
+        .def(int() / py::self)
+        .def(py::self / int())
         .def(+ py::self)
         .def(- py::self)
         .def(py::self += std::complex<int>())
@@ -112,15 +120,23 @@ PYBIND11_MODULE(tpsa, m) {
         .def(py::self + py::self)
         .def(double() + py::self)
         .def(py::self + double())
+        .def(int() + py::self)
+        .def(py::self + int())
         .def(py::self - py::self)
         .def(double() - py::self)
         .def(py::self - double())
+        .def(int() - py::self)
+        .def(py::self - int())
         .def(py::self * py::self)
         .def(double() * py::self)
         .def(py::self * double())
+        .def(int() * py::self)
+        .def(py::self * int())
         .def(py::self / py::self)
         .def(double() / py::self)
         .def(py::self / double())
+        .def(int() / py::self)
+        .def(py::self / int())
         .def(+ py::self)
         .def(- py::self);
 
@@ -155,6 +171,24 @@ PYBIND11_MODULE(tpsa, m) {
     m.def("erf", (DAVector (*)(const DAVector&)) &erf, "da_vector"_a);
     m.def("pow", (DAVector (*)(const DAVector&, const int)) &pow, "da_vector"_a, "order"_a);
     m.def("pow", (DAVector (*)(const DAVector&, const double)) &pow, "da_vector"_a, "order"_a);
+    m.def("sqrt", [](const std::complex<DAVector>& c){return sqrt(c);});
+    m.def("exp", [](const std::complex<DAVector>& c){return exp(c);});
+    m.def("log", [](const std::complex<DAVector>& c){return log(c);});
+    m.def("sin", [](const std::complex<DAVector>& c){return sin(c);});
+    m.def("cos", [](const std::complex<DAVector>& c){return cos(c);});
+    m.def("tan", [](const std::complex<DAVector>& c){return tan(c);});
+    m.def("asin", [](const std::complex<DAVector>& c){return asin(c);});
+    m.def("acos", [](const std::complex<DAVector>& c){return acos(c);});
+    m.def("atan", [](const std::complex<DAVector>& c){return atan(c);});
+    m.def("sinh", [](const std::complex<DAVector>& c){return sinh(c);});
+    m.def("cosh", [](const std::complex<DAVector>& c){return cosh(c);});
+    m.def("tanh", [](const std::complex<DAVector>& c){return tanh(c);});
+    m.def("asinh", [](const std::complex<DAVector>& c){return asinh(c);});
+    m.def("acosh", [](const std::complex<DAVector>& c){return acosh(c);});
+    m.def("atanh", [](const std::complex<DAVector>& c){return atanh(c);});
+    m.def("abs", [](const std::complex<DAVector>& c){return abs(c);});
+    m.def("pow", [](const std::complex<DAVector>& c, const int i){return pow(c,i);});
+    m.def("pow", [](const std::complex<DAVector>& c, const double d){return pow(c,d);});
     m.def("da_count", &da_count);
     m.def("da_remain", &da_remain);
     m.def("da_full_length", &da_full_length);
@@ -164,13 +198,13 @@ PYBIND11_MODULE(tpsa, m) {
     m.def("da_der", (DAVector (*)(const DAVector&, unsigned int)) &da_der, "da_vector"_a, "base_id"_a);
     m.def("da_int", (DAVector (*)(const DAVector&, unsigned int))  &da_int, "da_vector"_a, "base_id"_a);
     m.def("da_substitute_const", &da_substitute_const, "iv"_a, "base_id"_a, "x"_a, "ov"_a);
-    m.def("da_substitute_const", [](const DAVector iv, unsigned int idx, double x){DAVector ov; da_substitute_const(iv, idx, x, ov); return ov;});
+    m.def("da_substitute_const", [](const DAVector& iv, unsigned int idx, double x){DAVector ov; da_substitute_const(iv, idx, x, ov); return ov;});
     m.def("da_substitute", (void (*)(const DAVector&, unsigned int, const DAVector&, DAVector&)) &da_substitute, "iv"_a,
           "base_id"_a, "v"_a, "ov"_a);
-    m.def("da_substitute", [](const DAVector iv, unsigned int idx, const DAVector v){DAVector ov; da_substitute(iv, idx, v, ov); return ov;});
+    m.def("da_substitute", [](const DAVector& iv, unsigned int idx, const DAVector v){DAVector ov; da_substitute(iv, idx, v, ov); return ov;});
     m.def("da_substitute", (void (*)(const DAVector&, std::vector<unsigned int>&, std::vector<DAVector>&, DAVector&)) &da_substitute,
           "iv"_a, "based_id"_a, "v"_a, "ov"_a);
-    m.def("da_substitute", [](const DAVector iv, std::vector<unsigned int>& idx, std::vector<DAVector>& v){DAVector ov; da_substitute(iv, idx, v, ov); return ov;});
+    m.def("da_substitute", [](const DAVector& iv, std::vector<unsigned int>& idx, std::vector<DAVector>& v){DAVector ov; da_substitute(iv, idx, v, ov); return ov;});
     m.def("da_substitute", (void (*)(std::vector<DAVector>&, std::vector<unsigned int>&, std::vector<DAVector>&, std::vector<DAVector>&))
           &da_substitute, "iv"_a, "base_id"_a, "v"_a, "ov"_a);
     m.def("da_composition", (void (*)(std::vector<DAVector>&, std::vector<DAVector>&, std::vector<DAVector>&)) &da_composition, "iv"_a,
