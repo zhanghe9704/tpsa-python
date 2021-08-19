@@ -1,6 +1,6 @@
 # pyTPSA - PYTHON TPSA Lib
 
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)https://github.com/zhanghe9704/tpsa-python/blob/master/LICENSE.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/zhanghe9704/tpsa-python/blob/master/LICENSE.md)
 
 ## About this code
 
