@@ -271,56 +271,56 @@ For more examples of using this lib, please check out the files in the **example
 
 Currently, the tpsa lib supports the following operators and math functions. 
 
-Math operator overloaded
+- Math operator overloaded: (DA - DA vector, CD - complex DA vector)
 
-| Left hand | Operator | Right hand |
-| :-------: | :------: | :--------: |
-| DAVector  |    +     |  DAVector  |
-|  double   |    +     |  DAVector  |
-| DAVector  |    +     |   float    |
-|           |    +     |  DAVector  |
-| DAVector  |    -     |  DAVector  |
-| DAVector  |    -     |   float    |
-|   float   |    -     |  DAVector  |
-|           |    -     |  DAVector  |
-| DAVector  |    *     |  DAVector  |
-| DAVector  |    *     |   float    |
-|   float   |    *     |  DAVector  |
-| DAVector  |    /     |  DAVector  |
-| DAVector  |    /     |   float    |
-|   float   |    /     |  DAVector  |
-| DAVector  |    =     |  DAVector  |
-| DAVector  |    =     |   float    |
-| DAVector  |    +=    |  DAVector  |
-| DAVector  |    +=    |   float    |
-| DAVector  |    -=    |  DAVector  |
-| DAVector  |    -=    |   float    |
-| DAVector  |    *=    |  DAVector  |
-| DAVector  |    *=    |   float    |
-| DAVector  |    /=    |  DAVector  |
-| DAVector  |    /=    |   float    |
+  | Left hand | Operator | Right hand |
+  | :-------: | :------: | :--------: |
+  |   DA/CD   |    +     |   DA/CD    |
+  |  double   |    +     |   DA/CD    |
+  |   DA/CD   |    +     |   double   |
+  |           |    +     |   DA/CD    |
+  |   DA/CD   |    -     |   DA/CD    |
+  |   DA/CD   |    -     |   double   |
+  |  double   |    -     |   DA/CD    |
+  |           |    -     |   DA/CD    |
+  |   DA/CD   |    *     |   DA/CD    |
+  |   DA/CD   |    *     |   double   |
+  |  double   |    *     |   DA/CD    |
+  |   DA/CD   |    /     |   DA/CD    |
+  |   DA/CD   |    /     |   double   |
+  |  double   |    /     |   DA/CD    |
+  |   DA/CD   |    =     |   DA/CD    |
+  |   DA/CD   |    =     |   double   |
+  |   DA/CD   |    +=    |   DA/CD    |
+  |   DA/CD   |    +=    |   double   |
+  |   DA/CD   |    -=    |   DA/CD    |
+  |   DA/CD   |    -=    |   double   |
+  |   DA/CD   |    *=    |   DA/CD    |
+  |   DA/CD   |    *=    |   double   |
+  |   DA/CD   |    /=    |   DA/CD    |
+  |   DA/CD   |    /=    |   double   |
 
-Math functions overloaded:
+  Math functions overloaded:
 
-- sqrt
-- exp
-- log
-- sin
-- cos
-- tan
-- asin
-- acos
-- atan
-- sinh
-- cosh
-- tanh
-- pow
-- abs
-- erf
+  - sqrt
+  - exp
+  - log
+  - sin
+  - cos
+  - tan
+  - asin
+  - acos
+  - atan
+  - sinh
+  - cosh
+  - tanh
+  - pow
+  - abs
+  - erf (DA only)
 
 ## Known issues
 
-1. When some temporary variables in the C++ lib go out of scope, the memory of them are not released immediately as in pure C++ environment, although eventually they will be released a few steps after the function call finishes. This means we may need a larger DA vector pool in Python than in C++. Usually a pool size of a few hundred to a few thousand should be large enough, which is not a problem for a modern personal computer.   
+1. When some temporary variables in the C++ lib go out of scope, the memory of them are not released immediately while they do in pure C++ environment, although eventually they will be released a few steps after the function call finishes. This means we may need a larger DA vector pool in Python than in C++. Usually a pool size of a few hundred to a few thousand should be large enough, which is not a problem for a modern personal computer.   
 
 
 
