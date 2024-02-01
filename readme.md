@@ -1,4 +1,4 @@
-# pyTPSA - PYTHON TPSA Lib (obsolete)
+# pyTPSA - PYTHON TPSA Lib (DEPRECIATED)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/zhanghe9704/tpsa-python/blob/master/LICENSE.md)
 
@@ -258,36 +258,36 @@ For more examples of using this lib, please check out the files in the **example
 Currently, the tpsa lib supports the following operators and math functions. 
 
 - Math operator overloaded: (DA - DA vector, CD - complex DA vector)
-  
+
   | Left hand | Operator | Right hand |
-  |:---------:|:--------:|:----------:|
-  | DA/CD     | +        | DA/CD      |
-  | double    | +        | DA/CD      |
-  | DA/CD     | +        | double     |
-  |           | +        | DA/CD      |
-  | DA/CD     | -        | DA/CD      |
-  | DA/CD     | -        | double     |
-  | double    | -        | DA/CD      |
-  |           | -        | DA/CD      |
-  | DA/CD     | *        | DA/CD      |
-  | DA/CD     | *        | double     |
-  | double    | *        | DA/CD      |
-  | DA/CD     | /        | DA/CD      |
-  | DA/CD     | /        | double     |
-  | double    | /        | DA/CD      |
-  | DA/CD     | =        | DA/CD      |
-  | DA/CD     | =        | double     |
-  | DA/CD     | +=       | DA/CD      |
-  | DA/CD     | +=       | double     |
-  | DA/CD     | -=       | DA/CD      |
-  | DA/CD     | -=       | double     |
-  | DA/CD     | *=       | DA/CD      |
-  | DA/CD     | *=       | double     |
-  | DA/CD     | /=       | DA/CD      |
-  | DA/CD     | /=       | double     |
-  
+  | :-------: | :------: | :--------: |
+  |   DA/CD   |    +     |   DA/CD    |
+  |  double   |    +     |   DA/CD    |
+  |   DA/CD   |    +     |   double   |
+  |           |    +     |   DA/CD    |
+  |   DA/CD   |    -     |   DA/CD    |
+  |   DA/CD   |    -     |   double   |
+  |  double   |    -     |   DA/CD    |
+  |           |    -     |   DA/CD    |
+  |   DA/CD   |    *     |   DA/CD    |
+  |   DA/CD   |    *     |   double   |
+  |  double   |    *     |   DA/CD    |
+  |   DA/CD   |    /     |   DA/CD    |
+  |   DA/CD   |    /     |   double   |
+  |  double   |    /     |   DA/CD    |
+  |   DA/CD   |    =     |   DA/CD    |
+  |   DA/CD   |    =     |   double   |
+  |   DA/CD   |    +=    |   DA/CD    |
+  |   DA/CD   |    +=    |   double   |
+  |   DA/CD   |    -=    |   DA/CD    |
+  |   DA/CD   |    -=    |   double   |
+  |   DA/CD   |    *=    |   DA/CD    |
+  |   DA/CD   |    *=    |   double   |
+  |   DA/CD   |    /=    |   DA/CD    |
+  |   DA/CD   |    /=    |   double   |
+
   Math functions overloaded:
-  
+
   - sqrt
   - exp
   - log
